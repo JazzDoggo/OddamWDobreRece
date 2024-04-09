@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "charity.apps.CharityConfig"
 ]
 
 MIDDLEWARE = [
@@ -74,13 +75,11 @@ WSGI_APPLICATION = 'OddamWDobreRece.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
+try:
+    from OddamWDobreRece.settings_local import DATABASES
+except ModuleNotFoundError:
+    print("No data in file local_settings.py!")
+    exit(0)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
