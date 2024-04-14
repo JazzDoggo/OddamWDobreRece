@@ -8,9 +8,14 @@ class LandingPageView(View):
         return render(request, 'index.html')
 
 
-class AddDonationView(View):
+class DonationAddView(View):
     def get(self, request):
         return render(request, 'form.html')
+
+
+class DonationConfirmView(View):
+    def get(self, request):
+        return render(request, 'form-confirmation.html')
 
 
 class LoginView(View):

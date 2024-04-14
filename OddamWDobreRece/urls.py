@@ -22,7 +22,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', views.LandingPageView.as_view(), name='index'),
-    path('add_donation/', views.AddDonationView.as_view(), name='add_donation'),
+    path('donation/add/', views.DonationAddView.as_view(), name='donation_add'),
+    path('donation/confirm/', views.DonationConfirmView.as_view(), name='donation_confirm'),
     path('login/', views.LoginView.as_view(), name='login'),
     path('register/', views.RegisterView.as_view(), name='register'),
 ]
