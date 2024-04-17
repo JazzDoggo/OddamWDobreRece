@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
@@ -46,11 +46,19 @@ class LoginView(View):
 
         response = render(request, 'login.html')
         if all(validators):
-            user = authenticate(request, email=email, password=password)
-            if user is not None:
-                login(request, user)
-                response = redirect('index')
+            response = redirect('register')
+            if User.objects.filter(email=email).exists():
+                user = authenticate(request, email=email, password=password)
+                if user is not None:
+                    login(request, user)
+                    response = redirect('index')
         return response
+
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect('index')
 
 
 class RegisterView(View):
