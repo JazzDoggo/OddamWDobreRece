@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 
 from charity.models import Donation, Institution
+from users.models import CustomUser
 
 
 # Create your views here.
@@ -47,7 +48,7 @@ class LoginView(View):
         response = render(request, 'login.html')
         if all(validators):
             response = redirect('register')
-            if User.objects.filter(email=email).exists():
+            if CustomUser.objects.filter(email=email).exists():
                 user = authenticate(request, email=email, password=password)
                 if user is not None:
                     login(request, user)
@@ -82,7 +83,7 @@ class RegisterView(View):
 
         response = render(request, 'register.html')
         if all(validations):
-            user = User.objects.create(first_name=first_name, last_name=last_name, email=email)
+            user = CustomUser.objects.create(first_name=first_name, last_name=last_name, email=email)
             user.set_password(password)
             user.save()
             response = redirect('login')
