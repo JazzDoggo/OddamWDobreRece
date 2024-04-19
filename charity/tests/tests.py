@@ -31,7 +31,7 @@ def test_login_post(client):
 def test_logout_get(client):
     url = reverse('logout')
     response = client.get(url)
-    assert response.status_code == 200
+    assert response.status_code == 302
 
 
 def test_register_get(client):

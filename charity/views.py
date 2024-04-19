@@ -1,9 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
 
-from charity.models import Donation, Institution
+from charity.models import Donation, Institution, Category
 from users.models import CustomUser
 
 
@@ -23,9 +24,13 @@ class LandingPageView(View):
         return render(request, 'index.html', cnx)
 
 
-class DonationAddView(View):
+class DonationAddView(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, 'form.html')
+        cnx = {
+            'category_list': Category.objects.all(),
+            'institution_list': Institution.objects.all(),
+        }
+        return render(request, 'form.html', cnx)
 
 
 class DonationConfirmView(View):
