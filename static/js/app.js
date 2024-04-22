@@ -1,4 +1,62 @@
 document.addEventListener("DOMContentLoaded", function () {
+  function categories_update() {
+    return document.querySelectorAll("[name=categories]:checked");
+  }
+
+  function institutions_update() {
+    const categories = categories_update();
+    const institutions_all = document.querySelectorAll("[name=organization]");
+    institutions_all.forEach(function (i) {
+      let i_div = i.parentElement.parentElement;
+      i_div.hidden = false;
+      categories.forEach(function (c) {
+        if (i_div.dataset.categories.indexOf(c.value) < 0) {
+          i_div.hidden = true;
+        }
+      });
+    });
+  }
+
+  function summary_update() {
+    let i_category_nodes = categories_update();
+    let i_categories = [];
+    i_category_nodes.forEach(function (i) {
+      i_categories.push(String(i.value));
+    });
+    const i_bags = document.querySelector("[name=bags]").value;
+    const i_organization = document.querySelector(
+      "[name=organization]:checked",
+    ).value;
+    const i_address = document.querySelector("[name=address]").value;
+    const i_city = document.querySelector("[name=city]").value;
+    const i_postcode = document.querySelector("[name=postcode]").value;
+    const i_phone = document.querySelector("[name=phone]").value;
+    const i_date = document.querySelector("[name=date]").value;
+    const i_time = document.querySelector("[name=time]").value;
+    const i_info = document.querySelector("[name=more_info]").value;
+
+    const s_donation = document.querySelector("#summary-donation");
+    const s_organization = document.querySelector("#summary-organization");
+    const s_address = document.querySelector("#summary-address");
+    const s_city = document.querySelector("#summary-city");
+    const s_postcode = document.querySelector("#summary-postcode");
+    const s_phone = document.querySelector("#summary-phone");
+    const s_date = document.querySelector("#summary-date");
+    const s_time = document.querySelector("#summary-time");
+    const s_info = document.querySelector("#summary-info");
+
+    s_donation.innerText =
+      "Liczba worków: " + i_bags + "; z kategorii: " + i_categories.join(", ");
+    s_organization.innerText = "Adresat: " + i_organization;
+    s_address.innerText = i_address;
+    s_city.innerText = i_city;
+    s_postcode.innerText = i_postcode;
+    s_phone.innerText = i_phone;
+    s_date.innerText = i_date;
+    s_time.innerText = i_time;
+    s_info.innerText = i_info;
+  }
+
   /**
    * HomePage - Help section
    */
@@ -239,14 +297,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       });
 
-      // FORM filter by category
-      // const institutions_all = document.querySelectorAll("[name=organization]");
-      // institutions_all.forEach(function (i) {
-      //   i = i.parentElement.children[2].firstElementChild;
-      //   console.log(i);
-      // });
-      // console.log(institutions_all);
-
       // Form submit
       this.$form
         .querySelector("form")
@@ -282,8 +332,8 @@ document.addEventListener("DOMContentLoaded", function () {
         "[name=organization]:checked",
       );
 
-      console.log(this.categories_selected);
-      console.log(this.institution_selected);
+      institutions_update();
+      summary_update();
     }
 
     /**
