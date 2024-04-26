@@ -32,6 +32,56 @@ class DonationAddView(LoginRequiredMixin, View):
         }
         return render(request, 'form.html', cnx)
 
+    def post(self, request):
+        quantity = request.POST['bags']
+        categories = request.POST.getlist('categories')
+        institution = request.POST['organization']
+        institution = Institution.objects.get(pk=institution)
+        address = request.POST['address']
+        phone_number = request.POST['phone']
+        city = request.POST['city']
+        zip_code = request.POST['postcode']
+        pickup_date = request.POST['date']
+        pickup_time = request.POST['time']
+        pickup_comment = request.POST.get('more_info')
+        user = CustomUser.objects.get(email=request.user)
+
+        response = render(request, 'form.html')
+        validators = (
+            quantity is not None,
+            categories is not None,
+            institution is not None,
+            address is not None,
+            phone_number is not None,
+            city is not None,
+            zip_code is not None,
+            pickup_date is not None,
+            pickup_time is not None,
+            user is not None,
+        )
+        print(categories)
+        print(institution)
+        print(validators)
+        print(user)
+
+        response = render(request, 'form.html')
+        if all(validators):
+            donation = Donation.objects.create(quantity=quantity,
+                                               institution=institution,
+                                               address=address,
+                                               phone_number=phone_number,
+                                               city=city,
+                                               zip_code=zip_code,
+                                               pickup_date=pickup_date,
+                                               pickup_time=pickup_time,
+                                               pickup_comment=pickup_comment,
+                                               user=user)
+            donation.categories.set(categories)
+            donation.save()
+            print(donation)
+            response = render(request, 'form-confirmation.html')
+        return response
+
 
 class DonationConfirmView(View):
     def get(self, request):

@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
-  function categories_update() {
+  function categoriesUpdate() {
     return document.querySelectorAll("[name=categories]:checked");
   }
 
-  function institutions_update() {
-    const categories = categories_update();
+  function institutionsUpdate() {
+    const categories = categoriesUpdate();
     const institutions_all = document.querySelectorAll("[name=organization]");
     institutions_all.forEach(function (i) {
       let i_div = i.parentElement.parentElement;
@@ -17,16 +17,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  function summary_update() {
-    let i_category_nodes = categories_update();
+  function summaryUpdate() {
     let i_categories = [];
-    i_category_nodes.forEach(function (i) {
-      i_categories.push(String(i.value));
+    categoriesUpdate().forEach(function (i) {
+      i_categories.push(String(i.dataset.display));
     });
     const i_bags = document.querySelector("[name=bags]").value;
-    const i_organization = document.querySelector(
-      "[name=organization]:checked",
-    ).value;
+    const i_organization = document.querySelector("[name=organization]:checked")
+      .dataset.display;
     const i_address = document.querySelector("[name=address]").value;
     const i_city = document.querySelector("[name=city]").value;
     const i_postcode = document.querySelector("[name=postcode]").value;
@@ -257,13 +255,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const $stepForms = form.querySelectorAll("form > div");
       this.slides = [...this.$stepInstructions, ...$stepForms];
 
-      this.categories_selected = document.querySelectorAll(
-        "[name=categories]:checked",
-      );
-      this.institution_selected = document.querySelectorAll(
-        "[name=organization]:checked",
-      );
-
       this.init();
     }
 
@@ -321,19 +312,15 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       this.$stepInstructions[0].parentElement.parentElement.hidden =
-        this.currentStep >= 6;
-      this.$step.parentElement.hidden = this.currentStep >= 6;
+        this.currentStep >= 5;
+      this.$step.parentElement.hidden = this.currentStep >= 5;
+
+      institutionsUpdate();
 
       // TODO: get data from inputs and show them in summary
-      this.categories_selected = document.querySelectorAll(
-        "[name=categories]:checked",
-      );
-      this.institution_selected = document.querySelectorAll(
-        "[name=organization]:checked",
-      );
-
-      institutions_update();
-      summary_update();
+      if (this.currentStep === 5) {
+        summaryUpdate();
+      }
     }
 
     /**
@@ -343,8 +330,10 @@ document.addEventListener("DOMContentLoaded", function () {
      */
     submit(e) {
       e.preventDefault();
-      this.currentStep++;
+      // this.currentStep++;
       this.updateForm();
+
+      e.currentTarget.submit();
     }
   }
 

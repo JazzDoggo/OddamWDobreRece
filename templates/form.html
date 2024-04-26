@@ -54,7 +54,8 @@
     <div class="form--steps-container">
       <div class="form--steps-counter">Krok <span>1</span>/5</div>
 
-      <form action="form-confirmation.html" method="post">
+      <form method="post">
+        {% csrf_token %}
         <!-- STEP 1: class .active is switching steps -->
         <div data-step="1" class="active">
           <h3>Zaznacz co chcesz oddać:</h3>
@@ -65,7 +66,8 @@
                 <input
                     type="checkbox"
                     name="categories"
-                    value="{{ category }}"
+                    value="{{ category.pk }}"
+                    data-display="{{ category }}"
                 />
                 <span class="checkbox"></span>
                 <span class="description">{{ category }}</span>
@@ -102,9 +104,9 @@
 
           {% for institution in institution_list %}
             <div class="form-group form-group--checkbox"
-                 data-categories="{% for c in institution.categories.all %}{{ c }},{% endfor %}">
+                 data-categories="{% for c in institution.categories.all %}{{ c.pk }},{% endfor %}">
               <label>
-                <input type="radio" name="organization" value="{{ institution }}"/>
+                <input type="radio" name="organization" value="{{ institution.pk }}" data-display="{{ institution }}"/>
                 <span class="checkbox radio"></span>
                 <span class="description">
                   <div class="title">{{ institution }}</div>
@@ -184,15 +186,13 @@
               <ul>
                 <li>
                   <span class="icon icon-bag"></span>
-                  <span class="summary--text" id="summary-donation"
-                  >4 worki ubrań w dobrym stanie dla dzieci</span
-                  >
+                  <span class="summary--text" id="summary-donation"></span>
                 </li>
 
                 <li>
                   <span class="icon icon-hand"></span>
                   <span class="summary--text" id="summary-organization"
-                  >Dla fundacji "Mam marzenie" w Warszawie</span
+                  ></span
                   >
                 </li>
               </ul>
@@ -202,19 +202,19 @@
               <div class="form-section--column">
                 <h4>Adres odbioru:</h4>
                 <ul>
-                  <li id="summary-address">Prosta 51</li>
-                  <li id="summary-city">Warszawa</li>
-                  <li id="summary-postcode">99-098</li>
-                  <li id="summary-phone">123 456 789</li>
+                  <li id="summary-address"></li>
+                  <li id="summary-city"></li>
+                  <li id="summary-postcode"></li>
+                  <li id="summary-phone"></li>
                 </ul>
               </div>
 
               <div class="form-section--column">
                 <h4>Termin odbioru:</h4>
                 <ul>
-                  <li id="summary-date">13/12/2018</li>
-                  <li id="summary-time">15:40</li>
-                  <li id="summary-info">Brak uwag</li>
+                  <li id="summary-date"></li>
+                  <li id="summary-time"></li>
+                  <li id="summary-info"></li>
                 </ul>
               </div>
             </div>
