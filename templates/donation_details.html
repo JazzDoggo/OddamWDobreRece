@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block header_class %}
+{% endblock %}
+
+{% block slogan %}
+
+{% endblock %}
+
+{% block content %}
+  <section class="login-page">
+    <div class="help">
+      <div class="help--slides active">
+        <h2>Przekazane dary</h2>
+        <ul class="help--slides-items">
+          <li>
+            <div class="col">
+              <div class="title">{{ donation.institution }}</div>
+              <div class="subtitle">Adresat</div>
+            </div>
+            <div class="col">
+              <div class="title">Liczba worków: {{ donation.quantity }}</div>
+              <div class="subtitle">z kategorii
+                {% for category in donation.categories.all %}{{ category }} {% endfor %}</div>
+            </div>
+          </li>
+          <li>
+            <div class="col">
+              <div class="title">{{ donation.address }}, {{ donation.zip_code }} {{ donation.city }}</div>
+              <div class="subtitle">Adres odbioru przesyłki</div>
+            </div>
+            <div class="col">
+              <div class="title">{{ donation.phone_number }}</div>
+              <div class="subtitle">Numer telefonu</div>
+            </div>
+          </li>
+          <li>
+            <div class="col">
+              <div class="title">{{ donation.pickup_date }}, {{ donation.pickup_time }}</div>
+              <div class="subtitle">Data odbioru</div>
+            </div>
+            <div class="col">
+              <div class="title">{% if donation.is_taken %}Odebrane{% else %}Nieodebrane{% endif %}</div>
+              <div class="subtitle">Status</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <form method="post">
+          {% csrf_token %}
+          <a href="{% url 'user_profile' %}" class="btn btn--without-border">Powrót</a>
+          <button type="submit" class="btn">Archiwizuj</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

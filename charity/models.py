@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from users.models import CustomUser
 
@@ -43,4 +45,12 @@ class Donation(models.Model):
     pickup_date = models.DateField()
     pickup_time = models.TimeField()
     pickup_comment = models.TextField()
+    is_taken = models.BooleanField(default=False)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    def status(self):
+        if self.pickup_date < datetime.date.today():
+            status = "Odebrane"
+        else:
+            status = "Oczekuje na odbiór"
+        return status

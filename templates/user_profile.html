@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block header_class %}
+{% endblock %}
+
+{% block slogan %}
+
+{% endblock %}
+
+{% block content %}
+  <section class="login-page">
+    <div class="help">
+
+      <div class="help--slides active">
+        <h2>Profil użytkownika:</h2>
+        <ul class="help--slides-items">
+          <li>
+            <div class="col">
+              <div class="title">{{ user.email }}</div>
+              <div class="subtitle">Adres e-mail</div>
+            </div>
+            <div></div>
+          </li>
+          <li>
+            <div class="col">
+              <div class="title">{{ user.first_name }}</div>
+              <div class="subtitle">Imię</div>
+            </div>
+            <div></div>
+          </li>
+          <li>s
+            <div class="col">
+              <div class="title">{{ user.last_name }}</div>
+              <div class="subtitle">Nazwisko</div>
+            </div>
+            <div></div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="help--slides active">
+        <h2>Przekazane dary</h2>
+        <ul class="help--slides-items">
+          {% for donation in donations %}
+            <li>
+              <div class="col">
+                <div class="title">{{ donation.institution }}</div>
+                <div class="subtitle">Liczba worków: {{ donation.quantity }}; z kategorii
+                  {% for category in donation.categories.all %}{{ category }} {% endfor %}</div>
+                <div class="subtitle">
+                  {{ donation.pickup_date }}
+                </div>
+                <div class="subtitle">
+                  {% if donation.is_taken %}Odebrane{% else %}Nieodebrane{% endif %}
+                </div>
+              </div>
+              <div>
+                <a href="{% url 'donation_details' donation.pk %}" class="btn">Szczegóły</a>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+{% endblock %}

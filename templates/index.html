@@ -89,7 +89,7 @@
         {% for foundation in foundations %}
           <li>
             <div class="col">
-              <div class="title">Fundacja "{{ foundation }}"</div>
+              <div class="title">{{ foundation }}</div>
               <div class="subtitle">Cel i misja: {{ foundation.description }}</div>
             </div>
 
@@ -125,7 +125,7 @@
         {% for ngo in ngos %}
           <li>
             <div class="col">
-              <div class="title">Organizacja "{{ ngo.name }}"</div>
+              <div class="title">{{ ngo }}</div>
               <div class="subtitle">Cel i misja: {{ ngo.description }}</div>
             </div>
             <div class="col">

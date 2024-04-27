@@ -21,7 +21,7 @@
             {% if user.is_superuser %}
               <li><a href="{% url 'admin:index' %}">Panel administratora</a></li>
             {% endif %}
-            <li><a href="#">Profil</a></li>
+            <li><a href="{% url 'user_profile' %}">Profil</a></li>
             <li><a href="#">Ustawienia</a></li>
             <li><a href="{% url 'logout' %}">Wyloguj</a></li>
           </ul>

@@ -17,7 +17,6 @@ from django.urls import reverse_lazy
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -28,7 +27,6 @@ SECRET_KEY = 'django-insecure-%gzh%-vfommyv9i_d*nir4-^^677h5t*j)9u6=v&h0k0pc#9ao
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -74,12 +72,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'OddamWDobreRece.wsgi.application'
 
-
 # AUTHENTICATION_BACKENDS = [
 #     'django.contrib.auth.backends.ModelBackend', # This is the default that allows us to log in via username
 #     'users.authentication.EmailAuthBackend'
 # ]
 AUTH_USER_MODEL = 'users.CustomUser'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -118,7 +117,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/

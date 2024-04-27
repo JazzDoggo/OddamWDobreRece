@@ -1,5 +1,7 @@
+import datetime
+
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
@@ -83,9 +85,26 @@ class DonationAddView(LoginRequiredMixin, View):
         return response
 
 
-class DonationConfirmView(View):
-    def get(self, request):
-        return render(request, 'form-confirmation.html')
+class DonationDetailsView(UserPassesTestMixin, View):
+    def test_func(self):
+        user = self.request.user
+        return Donation.objects.get(pk=self.kwargs['pk']).user == user
+
+    def get(self, request, pk):
+        donation = Donation.objects.get(pk=pk)
+        cnx = {
+            'donation': donation,
+        }
+        return render(request, 'donation_details.html', cnx)
+
+    def post(self, request, pk):
+        donation = Donation.objects.get(pk=pk)
+        if donation.is_taken:
+            donation.is_taken = False
+        else:
+            donation.is_taken = True
+        donation.save()
+        return redirect('donation_details', pk=pk)
 
 
 class LoginView(View):
@@ -143,3 +162,12 @@ class RegisterView(View):
             user.save()
             response = redirect('login')
         return response
+
+
+class UserProfileView(LoginRequiredMixin, View):
+    def get(self, request):
+        user = CustomUser.objects.get(email=request.user)
+        cnx = {
+            'donations': Donation.objects.filter(user=user).order_by('is_taken', '-pickup_date'),
+        }
+        return render(request, 'user_profile.html', cnx)
